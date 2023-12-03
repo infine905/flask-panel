@@ -9,9 +9,14 @@ class Database:
             cursor = connection.cursor()
             cursor.execute("""CREATE TABLE IF NOT EXISTS Users
                         (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            uid INTEGER PRIMARY KEY AUTOINCREMENT,
                             username TEXT,
                             password TEXT
+                            admin BOOL,
+                            banned BOOL,
+                            banreason TEXT,
+                            subscription TEXT,
+                            registration_date TEXT
                         );""")
 
     def fetchData(self, request:str) -> list:
