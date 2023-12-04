@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 from functools import wraps
 from datetime import timedelta
 
-from app.Controllers import UserController
+from app.UserController import UserController
 from app.config import CONFIG
 
 app = Flask(__name__)
@@ -34,6 +34,17 @@ def no_login_required(f):
             return f(*args, **kwargs)
     return wrap
 
+def ban_check(f):
+    wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in Session and 'username' in Session:
+            if User.isBanned(Session['username']):
+                return redirect('/banned')
+            else:
+                return f(*args, **kwargs)
+        return wrap
+            
+
 def get_last_error() -> str:
     errors = get_flashed_messages()
     if len(errors) > 0:
@@ -47,9 +58,8 @@ def index_page():
     return redirect('/panel')
 
 @app.route('/panel', methods=['GET', 'POST'])
-@login_required
 def panel_page():
-    return render_template('home.html', config=CONFIG, isAdmin=False)
+    return render_template('home.html', config=CONFIG, session=Session, isAdmin=True, Session=Session)
 
 @app.route('/login', methods=['GET', 'POST'])
 @no_login_required

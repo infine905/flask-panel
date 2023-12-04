@@ -15,13 +15,15 @@ class UserModel(Database):
             raise Exception("Password must be at least 8 characters")
         if password != confirm_password:
             raise Exception("Passwords don't match")
+        
     def _adminCheck(self, username:str):
         return True
+    
     def _login(self, username:str, password:str) -> bool:
         request = f"SELECT * FROM Users WHERE username = '{username}' AND password = '{get_hash(password.encode()).hexdigest()}';"
         return len(self.fetchData(request)) > 0
     
     def _register(self, username:str, password:str) -> bool:
         date = datetime.now().strftime("%d %B %Y")
-        request = (f"INSERT INTO Users (username, password, registration_date) VALUES (?, ?, ?)", (username, get_hash(password.encode()).hexdigest(), date))
+        request = (f"INSERT INTO Users (username, password, admin, registration_date) VALUES (?, ?, ?)", (username, get_hash(password.encode()).hexdigest(), False, date))
         return self.executeData(request)

@@ -1,4 +1,4 @@
-from app.Models import UserModel
+from app.UserModel import UserModel
 
 class UserController(UserModel):
     def isAdmin(self, username:str) -> bool:
