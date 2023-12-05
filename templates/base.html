@@ -23,11 +23,11 @@
         {% block navbar%}
             <nav style="background-image: linear-gradient(to bottom, #303030 0%, #151515 100%);" class="navbar navbar-expand-lg navbar-dark">
                 <div class="container">
-                    <a class="navbar-brand" href="<?php Util::display(Util::securevar(SITE_URL . SUB_DIR)) ?>" style="font-family: 'Raleway', sans--serif;"><?php Util::display(Util::securevar(SITE_NAME)) ?></a>
+                    <a class="navbar-brand" href="/" style="font-family: 'Poppins', sans--serif;">{{ site_name }}</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="collapse navbar-collapse" id="navbarNav" style="font-family: 'Poppins', sans--serif;">
                         <ul class="navbar-nav ml-auto">
                             <!-- Check if logged in -->
                             {% if session['logged_in'] == True%}
@@ -58,10 +58,10 @@
                                 </li>
                             {% else %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/register">Login <i class="fas fa-sign-in-alt"></i></a>
+                                    <a class="nav-link" href="/login">Login <i class="fas fa-sign-in-alt"></i></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/login">Register <i class="fas fa-user-alt"></i></a>
+                                    <a class="nav-link" href="/register">Register <i class="fas fa-user-alt"></i></a>
                                 </li>
                             {% endif %}
                         </ul>

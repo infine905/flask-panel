@@ -2,10 +2,13 @@ from app.UserModel import UserModel
 
 class UserController(UserModel):
     def isBanned(self, username:str) -> bool:
-        return self._banCheck
+        return self._banCheck(username)
     
     def isAdmin(self, username:str) -> bool:
         return self._adminCheck(username)
+    
+    def getBanReason(self, username) -> str:
+        return self._banReason(username)
     
     def userLogin(self, username:str , password:str) -> bool: 
         return self._login(username, password)

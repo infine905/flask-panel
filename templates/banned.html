@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title%}
+    <title>Banned | {{ site_name }}</title>
+{% endblock %}
+{% block main %}
+    <div class="divide"></div>
+    <main class="container mt-2">
+        <div class="row">
+            <!--Banned message-->
+            <div class="col-12 mt-3 mb-2">
+                <div class="alert alert-primary" role="alert">
+                    You have been banned.
+                    <br>
+                    Reason: {{ ban_reason }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

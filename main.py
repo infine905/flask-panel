@@ -34,15 +34,23 @@ def no_login_required(f):
             return f(*args, **kwargs)
     return wrap
 
+def ban_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in Session and 'username' in Session:
+            if User.isBanned(Session['username']):
+                return f(*args, **kwargs)
+        return redirect('/')
+    return wrap
+
 def ban_check(f):
-    wraps(f)
+    @wraps(f)
     def wrap(*args, **kwargs):
         if 'logged_in' in Session and 'username' in Session:
             if User.isBanned(Session['username']):
                 return redirect('/banned')
-            else:
-                return f(*args, **kwargs)
-        return wrap      
+        return f(*args, **kwargs)
+    return wrap  
 
 def get_last_error() -> str:
     errors = get_flashed_messages()
@@ -52,10 +60,14 @@ def get_last_error() -> str:
         return ''
     
 @app.route('/', methods=['GET', 'POST'])
-@login_required
+@ban_check
 def index_page():
-    username = Session['username']
-    return render_template('home.html', config=CONFIG, session=Session, isAdmin=User.isAdmin(username), isBanned=User.isBanned(username))
+    isAdmin = False
+    isBanned = False
+    if 'logged_in' in Session and 'username' in Session:
+        isAdmin = User.isAdmin(Session['username'])
+        isBanned = User.isBanned(Session['username'])
+    return render_template('home.html', site_name=CONFIG['site_name'], session=Session, isAdmin=isAdmin, isBanned=isBanned)
 
 @app.route('/login', methods=['GET', 'POST'])
 @no_login_required
@@ -72,7 +84,7 @@ def login_page():
         else:
             error = 'Invalid username or password'
             flash(error)
-    return render_template('login.html', error=error)
+    return render_template('login.html', site_name=CONFIG['site_name'], error=error)
 
 @app.route('/register', methods=['GET', 'POST'])
 @no_login_required
@@ -91,8 +103,7 @@ def register_page():
         except Exception as e:
             error = str(e)
             flash(error)
-            
-    return render_template('register.html', error=error)
+    return render_template('register.html', site_name=CONFIG['site_name'], error=error)
 
 @app.route('/logout')
 @login_required
@@ -100,6 +111,13 @@ def logout():
     Session.pop('logged_in', None)
     Session.pop('username', None)
     return redirect('/login')
+
+@app.route('/banned', methods=['GET', 'POST'])
+@ban_required
+def banned_page():
+    username = Session['username']
+    ban_reason = User.getBanReason(username)
+    return render_template('banned.html', site_name = CONFIG['site_name'], ban_reason=ban_reason)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port='5000', debug=False)

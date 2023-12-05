@@ -26,6 +26,10 @@ class UserModel(Database):
         query_result = self.fetchOneData(request)
         return bool(query_result[0])
     
+    def _banReason(self, username:str) -> str:
+        request = f"SELECT banreason FROM Users WHERE username = '{username}';"
+        return str(self.fetchOneData(request)[0])
+    
     def _login(self, username:str, password:str) -> bool:
         request = f"SELECT * FROM Users WHERE username = '{username}' AND password = '{get_hash(password.encode()).hexdigest()}';"
         return len(self.fetchData(request)) > 0

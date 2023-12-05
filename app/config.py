@@ -1,5 +1,5 @@
 CONFIG = {
-    "site_name": "Light",
+    "site_name": "SiteName",
     "database": {
         "db_path": "app/database.sqlite",
         "ip": "",
