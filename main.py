@@ -5,8 +5,8 @@ from flask_bootstrap import Bootstrap
 from functools import wraps
 from datetime import timedelta
 
-from app.UserController import UserController
 from app.config import CONFIG
+from app.UserController import UserController
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -42,8 +42,7 @@ def ban_check(f):
                 return redirect('/banned')
             else:
                 return f(*args, **kwargs)
-        return wrap
-            
+        return wrap      
 
 def get_last_error() -> str:
     errors = get_flashed_messages()
@@ -55,11 +54,8 @@ def get_last_error() -> str:
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index_page():
-    return redirect('/panel')
-
-@app.route('/panel', methods=['GET', 'POST'])
-def panel_page():
-    return render_template('home.html', config=CONFIG, session=Session, isAdmin=True, Session=Session)
+    username = Session['username']
+    return render_template('home.html', config=CONFIG, session=Session, isAdmin=User.isAdmin(username), isBanned=User.isBanned(username))
 
 @app.route('/login', methods=['GET', 'POST'])
 @no_login_required
@@ -86,7 +82,7 @@ def register_page():
         username = request.form.get('username')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
-        
+
         try:
             if User.userRegister(username, password, confirm_password) == True:
                     Session['logged_in'] = True
@@ -95,6 +91,7 @@ def register_page():
         except Exception as e:
             error = str(e)
             flash(error)
+            
     return render_template('register.html', error=error)
 
 @app.route('/logout')
@@ -105,4 +102,4 @@ def logout():
     return redirect('/login')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port='5000', debug=False)

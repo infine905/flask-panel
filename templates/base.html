@@ -29,32 +29,33 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ml-auto">
-                            {% if Session['logged_in'] == True%}
-                                <!-- Check if banned in --> 
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Profile <i class="fas fa-user"></i></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Account-Logs <i class="fas fa-history"></i></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Login Tokens <i class="fas fa-shield-alt"></i></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">User Invites <i class="fas fa-envelope"></i></a>
-                                </li>
-
-                                <!-- Check if admin --> 
-                                {% if isAdmin == True%}
+                            <!-- Check if logged in -->
+                            {% if session['logged_in'] == True%}
+                                <!-- Check if banned -->
+                                {% if isBanned == False %} 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Admin <i class="fas fa-user-shield"></i></a>
+                                        <a class="nav-link" href="#">Profile <i class="fas fa-user"></i></a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Account-Logs <i class="fas fa-history"></i></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Login Tokens <i class="fas fa-shield-alt"></i></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">User Invites <i class="fas fa-envelope"></i></a>
+                                    </li>
+                                    <!-- Check if admin --> 
+                                    {% if isAdmin == True%}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Admin <i class="fas fa-user-shield"></i></a>
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
-
-                                    <!-- Logout -->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
-                                    </li>
+                                <!-- Logout -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
+                                </li>
                             {% else %}
                                 <li class="nav-item">
                                     <a class="nav-link" href="/register">Login <i class="fas fa-sign-in-alt"></i></a>

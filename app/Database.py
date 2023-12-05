@@ -11,7 +11,7 @@ class Database:
                         (
                             uid INTEGER PRIMARY KEY AUTOINCREMENT,
                             username TEXT,
-                            password TEXT
+                            password TEXT,
                             admin BOOL,
                             banned BOOL,
                             banreason TEXT,

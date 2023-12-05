@@ -17,7 +17,14 @@ class UserModel(Database):
             raise Exception("Passwords don't match")
         
     def _adminCheck(self, username:str):
-        return True
+        request = f"SELECT admin FROM Users WHERE username = '{username}';"
+        query_result = self.fetchOneData(request)
+        return bool(query_result[0])
+    
+    def _banCheck(self, username:str) -> bool:
+        request = f"SELECT banned FROM Users WHERE username = '{username}';"
+        query_result = self.fetchOneData(request)
+        return bool(query_result[0])
     
     def _login(self, username:str, password:str) -> bool:
         request = f"SELECT * FROM Users WHERE username = '{username}' AND password = '{get_hash(password.encode()).hexdigest()}';"
@@ -25,5 +32,5 @@ class UserModel(Database):
     
     def _register(self, username:str, password:str) -> bool:
         date = datetime.now().strftime("%d %B %Y")
-        request = (f"INSERT INTO Users (username, password, admin, registration_date) VALUES (?, ?, ?)", (username, get_hash(password.encode()).hexdigest(), False, date))
+        request = (f"INSERT INTO Users (username, password, admin, registration_date) VALUES (?, ?, ?, ?)", (username, get_hash(password.encode()).hexdigest(), False, date))
         return self.executeData(request)

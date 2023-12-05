@@ -1,6 +1,9 @@
 from app.UserModel import UserModel
 
 class UserController(UserModel):
+    def isBanned(self, username:str) -> bool:
+        return self._banCheck
+    
     def isAdmin(self, username:str) -> bool:
         return self._adminCheck(username)
     
