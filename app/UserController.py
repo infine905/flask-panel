@@ -1,6 +1,10 @@
 from app.UserModel import UserModel
+from app.Validators import UserValidators
 
 class UserController(UserModel):
+    def getIdByName(self, username:str) -> str:
+        return self._idByName(username)
+    
     def isBanned(self, username:str) -> bool:
         return self._banCheck(username)
     
@@ -14,6 +18,7 @@ class UserController(UserModel):
         return self._login(username, password)
 
     def userRegister(self, username:str, password:str , confirm_password:str) -> bool:
-        self._usernameValidator(username)
-        self._passwordValidator(password, confirm_password)
+        Validator = UserValidators(username, password, confirm_password)
+        Validator.usernameValidator(username)
+        Validator.passwordValidator(password, confirm_password)
         return self._register(username, password)
