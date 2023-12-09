@@ -27,5 +27,27 @@ class UserModel(Database):
     
     def _register(self, username:str, password:str) -> bool:
         date = datetime.now().strftime("%d %B %Y")
-        request = (f"INSERT INTO Users (username, password, admin, registration_date) VALUES (?, ?, ?, ?)", (username, get_hash(password.encode()).hexdigest(), False, date))
+        request = (f"INSERT INTO Users (username, password, admin, banned, registration_date) VALUES (?, ?, ?, ?, ?)",
+            (username, get_hash(password.encode()).hexdigest(), False, False, date))
         return self.executeData(request)
+    
+    #todo
+    def _sub(self, username:str) -> int:
+        return 123
+    
+class SystemModel(Database):
+    #todo
+    def _onlineStatus(self) -> bool:
+        return True
+    
+    #todo
+    def _version(self) -> str:
+        return "1.0.0"
+    
+    #todo
+    def _userCount(self) -> int:
+        return 228
+    
+    #todo
+    def _latestUser(self) -> str:
+        return "Aboba"

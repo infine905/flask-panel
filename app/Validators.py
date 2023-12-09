@@ -1,7 +1,7 @@
 from app.Database import Database
 
 class UserValidators(Database):
-    def _init_(self, username:str, password:str, confirm_password:str):
+    def __init__(self, username:str, password:str, confirm_password:str):
         self._username = username
         self._password = password
         self._confirm_password = confirm_password

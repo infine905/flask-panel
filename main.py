@@ -6,7 +6,7 @@ from functools import wraps
 from datetime import timedelta
 
 from app.config import CONFIG
-from app.UserController import UserController
+from app.Controllers import UserController, SystemController
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -14,6 +14,7 @@ app.secret_key = CONFIG['secret_key']
 app.permanent_session_lifetime = timedelta(hours=1)
 
 User = UserController()
+System = SystemController()
 
 def login_required(f):
     @wraps(f)
@@ -62,12 +63,21 @@ def get_last_error() -> str:
 @app.route('/', methods=['GET', 'POST'])
 @ban_check
 def index_page():
-    isAdmin = False
-    isBanned = False
-    if 'logged_in' in Session and 'username' in Session:
-        isAdmin = User.isAdmin(Session['username'])
-        isBanned = User.isBanned(Session['username'])
-    return render_template('home.html', site_name=CONFIG['site_name'], session=Session, isAdmin=isAdmin, isBanned=isBanned)
+    if ('logged_in' in Session) == False:
+        return render_template('index.html', site_name=CONFIG['site_name'])
+    else:
+        data = {
+            "isAdmin": User.isAdmin(Session['username']),
+            "isBanned": User.isBanned(Session['username']),
+            "notification": "Жека гей", #System.getNews(),
+            "online_status": "Undetect" if System.getOnlineStatus() else "Detect",
+            "version": System.getVersion(),
+            "hasSub": User.hasSub(Session['username']),
+            "sub": User.getSub(Session['username']),
+            "users_count": System.getUserCount(),
+            "latest_user": System.getLatestUser()
+        }
+        return render_template('home.html', site_name=CONFIG['site_name'], session=Session, data=data)
 
 @app.route('/viewprofile/<id>', methods=['GET', 'POST'])
 def viewprofile_page(id):

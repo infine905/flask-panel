@@ -32,7 +32,7 @@
                             <!-- Check if logged in -->
                             {% if session['logged_in'] == True%}
                                 <!-- Check if banned -->
-                                {% if isBanned == False %} 
+                                {% if data['isBanned'] == False %} 
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">Profile <i class="fas fa-user"></i></a>
                                     </li>
@@ -46,7 +46,7 @@
                                         <a class="nav-link" href="#">User Invites <i class="fas fa-envelope"></i></a>
                                     </li>
                                     <!-- Check if admin --> 
-                                    {% if isAdmin == True%}
+                                    {% if data['isAdmin'] == True%}
                                         <li class="nav-item">
                                             <a class="nav-link" href="#">Admin <i class="fas fa-user-shield"></i></a>
                                         </li>
