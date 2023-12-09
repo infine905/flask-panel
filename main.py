@@ -69,6 +69,10 @@ def index_page():
         isBanned = User.isBanned(Session['username'])
     return render_template('home.html', site_name=CONFIG['site_name'], session=Session, isAdmin=isAdmin, isBanned=isBanned)
 
+@app.route('/viewprofile/<id>', methods=['GET', 'POST'])
+def viewprofile_page(id):
+    return 
+    
 @app.route('/login', methods=['GET', 'POST'])
 @no_login_required
 def login_page():   

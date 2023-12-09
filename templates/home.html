@@ -2,3 +2,70 @@
 {% block title%}
     <title>Home | {{ site_name }}</title>
 {% endblock %}
+<main class="container mt-2">
+    <div class="row">
+        {% block main%}
+            <!-- Check if logged in -->
+            {% if session['logged_in'] == True %}
+                <!--Welome message-->
+                <div class="col-12 mt-3 mb-2" >
+                    <div class="alert alert-primary" role="alert">Welcome back, <a href='/myprofile'><b style="color: #f9f2d5;">{{ session['username'] }}</b></a>
+                    </div>
+                </div>
+                <!--News-->
+                <div class="col-lg-9 col-md-12">
+                    <div class="rounded p-3 mb-3">
+                        <div class="h5 border-bottom border-secondary pb-1"><i class="fas fa-newspaper"></i> News</div>
+                        <div class="row text-muted">
+                            <div class="col-12 clearfix">
+                                <strong>{{ news }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Status-->
+                <div class="col-lg-3 col-md-12">
+                    <div class="rounded p-3 mb-3">
+                        <div class="h5 border-bottom border-secondary pb-1" style="text-align: center;">Status</div>
+                        <div class="row text-muted">
+                            <!--Offline // Online-->
+                            <div class="col-12 clearfix">
+                                <i class="fas fa-info-circle"></i> Status: <p class="float-right mb-0">{{ online_status }}</p>
+                            </div>
+                            <!--System version-->
+                            <div class="col-12 clearfix">
+                                <i class="fas fa-code-branch"></i> Version: <p class="float-right mb-0">{{ version }}</p>
+                            </div>
+                            <div class="col-12 clearfix">
+                                <i class="fas fa-user-clock"></i> Sub: <p class="float-right mb-0">{{ sub }}</p>
+                            </div>
+                        </div>
+                        <br>
+                        <!--Statistics-->
+                        <div class="h5 border-bottom border-secondary pb-1" style="text-align: center;">Statistics</div>
+                        <div class="row text-muted">
+                            <!--Total Users-->
+                            <div class="col-12 clearfix">
+                                Users: <p class="float-right mb-0">{{ users_count }}</p>
+                            </div>
+                            <!--Latest User-->
+                            <div class="col-12 clearfix">
+                                Latest User: <p class="float-right mb-0">{{ latest_user }}</p>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- Check if has sub -->
+                        {% if hasSub == True %}
+                            <div class="h5 border-bottom border-secondary pb-1" style="text-align: center;"></div>
+                            <div class="col-12 text-center pt-1">
+                                <a style="background-color: #191919; color: white;" class="btn" href="/download">Download Loader <i class="fas fa-download"></i></a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+
+            {% endif %}
+        {% endblock %}
+    </div>
+</main>
